@@ -20,15 +20,50 @@ export function fuseTwoDemons(nameA: string, nameB: string, compendium: Compendi
   const { race: raceA, lvl: lvlA } = compendium.getDemon(nameA);
   const { race: raceB, lvl: lvlB } = compendium.getDemon(nameB);
 
+  if (raceA === raceB) {
+    const elementResult = fusionChart.getRaceFusions(raceA)[raceA];
+    const ingLvls2 = compendium.getIngredientDemonLvls(raceA).filter(lvl => lvl !== lvlA);
+    const recipes: NamePair[] = [];
+
+    return elementResult;
+  }
+
+  if (compendium.isElementDemon(nameB)) {
+    const recipes: NamePair[] = [];
+
+    const resultModifier = fusionChart.getElemFusions(nameB)[raceA]
+    const lvlsR = compendium.getResultDemonLvls(raceA)
+
+    const bin = findBin(lvlA, lvlsR) + resultModifier;
+
+    if (bin !== -1 && lvlsR[bin] !== 100 && (raceA != raceB || lvlA != lvlB)) {
+      const nameR = compendium.reverseLookupDemon(raceA, lvlsR[bin]);
+      return nameR;
+    }
+
+    return "not_found";
+  } else if (compendium.isElementDemon(nameA)){
+    const recipes: NamePair[] = [];
+
+    const resultModifier = fusionChart.getElemFusions(nameA)[raceB]
+    const lvlsR = compendium.getResultDemonLvls(raceB)
+
+    const bin = findBin(lvlB, lvlsR) + resultModifier;
+
+    if (bin !== -1 && lvlsR[bin] !== 100 && (raceA != raceB || lvlA != lvlB)) {
+      const nameR = compendium.reverseLookupDemon(raceB, lvlsR[bin]);
+      return nameR;
+    }
+
+    return "not_found";
+  }
+
   const raceR = fusionChart.getRaceFusion(raceA, raceB)
   const lvlsR = compendium.getResultDemonLvls(raceR);
   const binsB = lvlsR.map(lvl => 2 * (lvl - fusionChart.lvlModifier) - lvlA);
   const binB = findBin(lvlB, binsB);
 
   if (binB !== -1 && lvlsR[binB] !== 100 && (raceA != raceB || lvlA != lvlB)) {
-    console.log(raceA, raceB);
-    
-    console.log(raceR, lvlsR[binB]);
     const nameR = compendium.reverseLookupDemon(raceR, lvlsR[binB]);
     return nameR;
   }

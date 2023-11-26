@@ -1,6 +1,6 @@
 import { FusionChart } from './smt1/models/fusion-chart';
 import { CompendiumConfig } from './smt1/models';
-import { fuseTwoDemons, fuseWithDiffRace } from './compendium/fusions/smt-nonelem-fusions';
+import { fuseTwoDemons } from './compendium/fusions/smt-nonelem-fusions';
 
 import COMP_CONFIG_JSON from './smtif/data/comp-config.json';
 import DEMON_DATA_JSON from './smtif/data/demon-data.json';
@@ -82,5 +82,66 @@ const SMT_COMP_CONFIG: CompendiumConfig = {
 let smtifCompendium  = new Compendium(SMT_COMP_CONFIG)
 let smtifFusionChart = new FusionChart(SMT_COMP_CONFIG, false)
 
-console.log("Fusing Pixie and Angel")
-console.log(fuseTwoDemons("Pixie", "Angel", smtifCompendium, smtifFusionChart))
+interface Party {
+  demons: string[];
+}
+
+function findDemonFusionPath(start: Party, target: string): string[] | null {
+  const queue: { party: Party; path: string[] }[] = [{ party: start, path: [] }];
+  const visited = new Set<string>();
+
+  while (queue.length > 0) {
+    const { party, path } = queue.shift()!;
+
+    for (let i = 0; i < party.demons.length; i++) {
+      for (let j = i + 1; j < party.demons.length; j++) {
+        console.log("Fusing: ", party.demons[i], party.demons[j])
+        const newDemon = fuseTwoDemons(party.demons[i], party.demons[j], smtifCompendium, smtifFusionChart);
+        console.log("Resut  : ", newDemon)
+       
+        if (newDemon === target) {
+          return [...path, `${party.demons[i]} + ${party.demons[j]} => ${newDemon}`];
+        } 
+
+        if (newDemon === "not_found") {
+          continue;
+        }
+
+        const newParty = {
+          demons: [...party.demons.slice(0, i), ...party.demons.slice(i + 1, j), ...party.demons.slice(j + 1), newDemon],
+        };
+
+        const newPartyString = JSON.stringify(newParty.demons.map(demon => demon).sort());
+
+        if (!visited.has(newPartyString)) {
+          queue.push({
+            party: newParty,
+            path: [...path, `${party.demons[i]} + ${party.demons[j]} => ${newDemon}`],
+          });
+          visited.add(newPartyString);
+        }
+      }
+    }
+  }
+
+  return null;
+}
+
+// Parse command line arguments.
+const args = process.argv.slice(2);
+const target = args.pop();
+const demons = args.map(name => name);
+
+// Create the starting party.
+const start: Party = { demons };
+
+// Find the fusion path.
+const path = findDemonFusionPath(start, target);
+
+// Print the fusion path.
+if (path) {
+  console.log(`Fusion path to ${target}:`);
+  path.forEach(step => console.log(step));
+} else {
+  console.log(`No fusion path found to ${target}.`);
+}
