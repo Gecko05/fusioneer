@@ -1,4 +1,4 @@
-import { NamePair, Compendium, FusionChart, ElemModifiers } from '../models';
+import { NamePair, Compendium, FusionChart, Demon, ElemModifiers } from '../models';
 
 function findBin(n: number, bins: number[]): number {
   if (!bins.length) {
@@ -16,13 +16,24 @@ function findBin(n: number, bins: number[]): number {
   return index === bins.length ? index - 1 : index;
 }
 
-export function fuseTwoDemons(name1: string, name2: string, compendium: Compendium, fusionChart: FusionChart): string {
-  const { race: raceA, lvl: lvlA } = compendium.getDemon(name1);
-  const { race: raceB, lvl: lvlB } = compendium.getDemon(name2);
+export function fuseTwoDemons(nameA: string, nameB: string, compendium: Compendium, fusionChart: FusionChart): string {
+  const { race: raceA, lvl: lvlA } = compendium.getDemon(nameA);
+  const { race: raceB, lvl: lvlB } = compendium.getDemon(nameB);
 
-  
+  const raceR = fusionChart.getRaceFusion(raceA, raceB)
+  const lvlsR = compendium.getResultDemonLvls(raceR);
+  const binsB = lvlsR.map(lvl => 2 * (lvl - fusionChart.lvlModifier) - lvlA);
+  const binB = findBin(lvlB, binsB);
 
-  return "hello";
+  if (binB !== -1 && lvlsR[binB] !== 100 && (raceA != raceB || lvlA != lvlB)) {
+    console.log(raceA, raceB);
+    
+    console.log(raceR, lvlsR[binB]);
+    const nameR = compendium.reverseLookupDemon(raceR, lvlsR[binB]);
+    return nameR;
+  }
+
+  return "not_found";
 }
 
 export function fuseWithDiffRace(name: string, compendium: Compendium, fusionChart: FusionChart): NamePair[] {

@@ -1,6 +1,6 @@
 import { FusionChart } from './smt1/models/fusion-chart';
 import { CompendiumConfig } from './smt1/models';
-import { fuseWithDiffRace } from 'compendium/fusions/smt-nonelem-fusions';
+import { fuseTwoDemons, fuseWithDiffRace } from './compendium/fusions/smt-nonelem-fusions';
 
 import COMP_CONFIG_JSON from './smtif/data/comp-config.json';
 import DEMON_DATA_JSON from './smtif/data/demon-data.json';
@@ -82,4 +82,5 @@ const SMT_COMP_CONFIG: CompendiumConfig = {
 let smtifCompendium  = new Compendium(SMT_COMP_CONFIG)
 let smtifFusionChart = new FusionChart(SMT_COMP_CONFIG, false)
 
-console.log(fuseWithDiffRace("Aeros", smtifCompendium, smtifFusionChart))
+console.log("Fusing Pixie and Angel")
+console.log(fuseTwoDemons("Pixie", "Angel", smtifCompendium, smtifFusionChart))

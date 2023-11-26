@@ -71,6 +71,7 @@ export class SpeciesFusionChart implements FusionChart {
   }
 
   getRaceFusion(raceA: string, raceB: string): string {
+    const raceFusions = this.getRaceFusions(raceA);
     return this.getRaceFusions(raceA)[raceB] || '';
   }
 

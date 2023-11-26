@@ -169,6 +169,8 @@ export abstract class SmtFusionChart implements FusionChart {
   }
 
   getRaceFusion(raceA: string, raceB: string): string {
+    const raceFusions = this.getRaceFusions(raceA);
+    console.log(raceFusions);
     return this.getRaceFusions(raceA)[raceB] || '';
   }
 
