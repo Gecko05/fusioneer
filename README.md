@@ -6,4 +6,6 @@ Most of the source code comes from this amazing repo: [https://github.com/aqiu38
 
 Usage:
 
-```fusioneer.exe demon1 demon2 demon3 ... targetDemon```
+```fusioneer.exe game demon1 demon2 demon3 ... targetDemon```
+
+Where game can be: 'smt', 'smt2' or 'smtif'
