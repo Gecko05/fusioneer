@@ -10,6 +10,7 @@ Usage:
 
 Where game can be: ```smt```, ```smt2``` or ```smtif```
 
+Consult: [https://aqiu384.github.io/megaten-fusion-tool/home](https://aqiu384.github.io/megaten-fusion-tool/home) for the correct demon names.
 If you need to type in a demon name that has two words, use double quotes e.g. ```fusioneer_win.exe smt2 Ogre "Zombie Dog" "High Pixie" Chernobog```
 
 ![image](https://github.com/Gecko05/fusioneer/assets/22453392/1bcd4743-f05b-416d-ba88-e6d583e35d00)
