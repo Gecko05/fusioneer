@@ -29,7 +29,9 @@ export function fuseTwoDemons(nameA: string, nameB: string, compendium: Compendi
     const ingLvls2 = compendium.getIngredientDemonLvls(raceA).filter(lvl => lvl !== lvlA);
     const recipes: NamePair[] = [];
 
-    return elementResult;
+    if (elementResult in fusionChart.elementDemons) {
+      return elementResult;
+    }
   }
 
   // Fuse with element

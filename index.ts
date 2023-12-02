@@ -303,11 +303,9 @@ if (game != "smtif" && game != "smt2" && game != "smt") {
 // Find the fusion path.
 const path = findDemonFusionPath(game, start, target);
 
-// Change the argument to set the size of the pentacle
-console.log(asciiArt);
-
 // Print the fusion path.
 if (path) {
+  console.log(asciiArt);
   console.log(`Fusion path to ${target}:`);
   path.forEach(step => console.log(step));
 } else {
