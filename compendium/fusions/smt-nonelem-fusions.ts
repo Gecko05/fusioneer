@@ -17,9 +17,13 @@ function findBin(n: number, bins: number[]): number {
 }
 
 export function fuseTwoDemons(nameA: string, nameB: string, compendium: Compendium, fusionChart: FusionChart): string {
+  if (nameA == undefined || nameB == undefined || nameA == nameB) {
+    return "not_found";
+  }
   const { race: raceA, lvl: lvlA } = compendium.getDemon(nameA);
   const { race: raceB, lvl: lvlB } = compendium.getDemon(nameB);
 
+  // Fuse with same race
   if (raceA === raceB) {
     const elementResult = fusionChart.getRaceFusions(raceA)[raceA];
     const ingLvls2 = compendium.getIngredientDemonLvls(raceA).filter(lvl => lvl !== lvlA);
@@ -28,6 +32,7 @@ export function fuseTwoDemons(nameA: string, nameB: string, compendium: Compendi
     return elementResult;
   }
 
+  // Fuse with element
   if (compendium.isElementDemon(nameB)) {
     const recipes: NamePair[] = [];
 
@@ -58,6 +63,7 @@ export function fuseTwoDemons(nameA: string, nameB: string, compendium: Compendi
     return "not_found";
   }
 
+  // Fuse with different race
   const raceR = fusionChart.getRaceFusion(raceA, raceB)
   const lvlsR = compendium.getResultDemonLvls(raceR);
   const binsB = lvlsR.map(lvl => 2 * (lvl - fusionChart.lvlModifier) - lvlA);
