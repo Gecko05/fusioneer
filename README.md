@@ -6,8 +6,8 @@ Most of the source code comes from this amazing repo: [https://github.com/aqiu38
 
 Usage:
 
-```fusioneer.exe game demon1 demon2 demon3 ... targetDemon```
+```fusioneer_win.exe game demon1 demon2 demon3 ... targetDemon```
 
 Where game can be: ```smt```, ```smt2``` or ```smtif```
 
-If you need to type in a demon name that has two words, use single quotes e.g. ```fusioneer.exe smt2 Ogre 'Zombie Dog' High Pixie```
+If you need to type in a demon name that has two words, use single quotes e.g. ```fusioneer_win.exe smt2 Ogre 'Zombie Dog' High Pixie```
